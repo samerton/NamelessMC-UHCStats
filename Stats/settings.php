@@ -28,7 +28,7 @@ if($user->isLoggedIn()){
 ?>
 
 <h3>Addon: Stats</h3>
-Author: andrewcbaker<br />
+Author: relavis<br />
 Version: 1.0<br />
 Description: Show stats for UHC<br />
 

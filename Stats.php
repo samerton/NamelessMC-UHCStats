@@ -219,7 +219,7 @@ if(isset($_GET['p'])){
 						$username = $queries->getWhere('uuid_cache', array('uuid', '=', $stat[0]->UUID));
 						
 						if(!count($username)){
-							// Couldn't find, check BAT database
+							// Couldn't find, check database
 							$username = $stats->getUsernameFromUUID($stat[0]->UUID);
 							
 							if(!count($username)){
