@@ -1,7 +1,6 @@
 <?php 
 /*
- *	Made by Samerton
- *  https://worldscapemc.com
+ *	Made by relavis
  *
  *  License: MIT
  */

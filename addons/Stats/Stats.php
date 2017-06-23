@@ -1,10 +1,8 @@
 <?php
 /*
- *	Made by Samerton
- *  http://worldscapemc.co.uk
+ *	Made by relavis, modified by Samerton
  *
  *  License: MIT
- *  Copyright (c) 2016 Samerton
  */
  
 // Stats class
@@ -39,7 +37,11 @@ class Stats {
 		
 		foreach($stats as $stat){
 			$results[$i]["id"] = $stat->id;
-			$results[$i]["uuid"] = $stat->UUID;
+			if(isset($stat->uuid))
+				$results[$i]["uuid"] = $stat->uuid;
+			else if(isset($stat->UUID))
+				$results[$i]["uuid"] = $stat->UUID;
+			
 			$results[$i]["wins"] = $stat->wins;
 			$results[$i]["kills"] = $stat->kills;
 			$results[$i]["deaths"] = $stat->deaths;

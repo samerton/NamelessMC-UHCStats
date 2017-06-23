@@ -1,7 +1,6 @@
 <?php 
 /* 
- *	Made by Samerton
- *  https://worldscapemc.com
+ *	Made by relavis and Samerton
  *
  *  License: MIT
  */
@@ -35,7 +34,7 @@ if(substr($_SERVER['REQUEST_URI'], -1) !== '/' && !strpos($_SERVER['REQUEST_URI'
 // Get page number
 if(isset($_GET['p'])){
 	if(!is_numeric($_GET['p'])){
-		Redirect::to('/stats');
+		Redirect::to('/stats/');
 		die();
 	} else {
 		if($_GET['p'] == 1){ 
@@ -135,46 +134,41 @@ if(isset($_GET['p'])){
 				if(isset($mcname)) unset($mcname);
 				
 				$stat = $all_stats[$n];
+
 				$stats_query = $queries->getWhere('users', array('uuid', '=', str_replace('-', '', $stat["uuid"])));
+				
 				if(empty($stats_query)){
+
+					$stats_query = $queries->getWhere('uuid_cache', array('uuid', '=', str_replace('-', '', $stat["uuid"])));
 					
-					$mcname = $stats->getUsernameFromUUID($stat['uuid']);
-					
-					if(!count($mcname)){
-						
-						$stats_query = $queries->getWhere('uuid_cache', array('uuid', '=', str_replace('-', '', $stat["uuid"])));
-						
-						if(empty($stats_query)){
-							// Query Minecraft API to retrieve username
-							$profile = ProfileUtils::getProfile(str_replace('-', '', $stat["uuid"]));
-							if(empty($profile)){
-								// Couldn't find player
-								
-							} else {
-								$result = $profile->getProfileAsArray();
-									if(isset($result['username'])){
-									$mcname = htmlspecialchars($result["username"]);
-									$uuid = htmlspecialchars(str_replace('-', '', $stat["uuid"]));
-									try {
-										$queries->create("uuid_cache", array(
-											'mcname' => $mcname,
-											'uuid' => $uuid
-										));
-									} catch(Exception $e){
-										die($e->getMessage());
-									}
+					if(empty($stats_query)){
+						// Query Minecraft API to retrieve username
+						$profile = ProfileUtils::getProfile(str_replace('-', '', $stat["uuid"]));
+						if(empty($profile)){
+							// Couldn't find player
+							
+						} else {
+							$result = $profile->getProfileAsArray();
+								if(isset($result['username'])){
+								$mcname = htmlspecialchars($result["username"]);
+								$uuid = htmlspecialchars(str_replace('-', '', $stat["uuid"]));
+								try {
+									$queries->create("uuid_cache", array(
+										'mcname' => $mcname,
+										'uuid' => $uuid
+									));
+								} catch(Exception $e){
+									die($e->getMessage());
 								}
 							}
 						}
-						$mcname = $queries->getWhere('uuid_cache', array('uuid', '=', str_replace('-', '', $stat["uuid"])));
-						if(count($mcname))
-							$mcname = $mcname[0]->mcname;
-						else
-							$mcname = 'Unknown';
-
-					} else {
-						$mcname = $mcname[0]->player;
 					}
+					$mcname = $queries->getWhere('uuid_cache', array('uuid', '=', str_replace('-', '', $stat["uuid"])));
+					if(count($mcname))
+						$mcname = $mcname[0]->mcname;
+					else
+						$mcname = 'Unknown';
+
 				} else {
 					$mcname = $stats_query[0]->mcname;
 				}
@@ -182,10 +176,10 @@ if(isset($_GET['p'])){
 			?>
 		      <tr>
 			    <td><a href="/profile/<?php echo htmlspecialchars($mcname); ?>"><?php echo htmlspecialchars($mcname); ?></a></td>
-				<td><?php $stat["wins"]; ?></td>
-				<td><?php $stat["kills"]; ?></td>
-				<td><?php $stat["deaths"]; ?></td>
-				<td><?php $stat["kd"]; ?></td>
+				<td><?php echo $stat["wins"]; ?></td>
+				<td><?php echo $stat["kills"]; ?></td>
+				<td><?php echo $stat["deaths"]; ?></td>
+				<td><?php echo $stat["kd"]; ?></td>
 		      </tr>
 			<?php
 				$n++;

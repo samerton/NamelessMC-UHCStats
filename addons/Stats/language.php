@@ -1,10 +1,8 @@
 <?php 
 /*
- *	Made by Samerton
- *  http://worldscapemc.co.uk
+ *	Made by relavis
  *
  *  License: MIT
- *  Copyright (c) 2016 Samerton
  */
 
 // Language file for "Stats" addon
